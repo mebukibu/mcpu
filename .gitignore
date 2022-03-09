@@ -1,2 +1,6 @@
 a.out
 *.lnk
+mcc/mcc
+tmp
+tmp.s
+*.o
