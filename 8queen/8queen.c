@@ -91,7 +91,7 @@ int main() {
   // 8クイーンソルバーの本体
   eightqueen(0);
 
-  // デバッグのため，画面に出力
+/*// デバッグのため，画面に出力
   int i;
   int j;
   int board[8][8];
@@ -110,6 +110,6 @@ int main() {
     }
     printf("\n");
   }
-  
+  */
   return 0;
 }
