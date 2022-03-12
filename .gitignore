@@ -4,3 +4,4 @@ mcc/mcc
 tmp
 tmp.s
 *.o
+tb
