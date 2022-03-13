@@ -8,6 +8,6 @@ module register (clk, rst_n, load, d, q);
 
   always @(posedge clk, negedge rst_n)
     if (!rst_n) q <= 0;
-    else if(load) q <= d;
+    else if (load) q <= d;
   
 endmodule
