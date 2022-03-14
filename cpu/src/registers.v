@@ -8,21 +8,23 @@ module registers (clk, rst_n, load, sel, d, a, b);
 
   wire [63:0] raxout, rdiout, rsiout, rdxout, rcxout,
               rbpout, rspout, rbxout, r8out, r9out;
+  reg raxld, rdild, rsild, rdxld, rcxld,
+      rbpld, rspld, rbxld, r8ld, r9ld;
   reg rax2a, rdi2a, rsi2a, rdx2a, rcx2a,
       rbp2a, rsp2a, rbx2a, r82a, r92a;
   reg rax2b, rdi2b, rsi2b, rdx2b, rcx2b,
       rbp2b, rsp2b, rbx2b, r82b, r92b;
 
-  register rax(.clk(clk), .rst_n(rst_n), .load(rax2b), .d(d), .q(raxout));
-  register rdi(.clk(clk), .rst_n(rst_n), .load(rdi2b), .d(d), .q(rdiout));
-  register rsi(.clk(clk), .rst_n(rst_n), .load(rsi2b), .d(d), .q(rsiout));
-  register rdx(.clk(clk), .rst_n(rst_n), .load(rdx2b), .d(d), .q(rdxout));
-  register rcx(.clk(clk), .rst_n(rst_n), .load(rcx2b), .d(d), .q(rcxout));
-  register rbp(.clk(clk), .rst_n(rst_n), .load(rbp2b), .d(d), .q(rbpout));
-  register rsp(.clk(clk), .rst_n(rst_n), .load(rsp2b), .d(d), .q(rspout));
-  register rbx(.clk(clk), .rst_n(rst_n), .load(rbx2b), .d(d), .q(rbxout));
-  register r8(.clk(clk), .rst_n(rst_n), .load(r82b), .d(d), .q(r8out));
-  register r9(.clk(clk), .rst_n(rst_n), .load(r92b), .d(d), .q(r9out));
+  register rax(.clk(clk), .rst_n(rst_n), .load(raxld), .d(d), .q(raxout));
+  register rdi(.clk(clk), .rst_n(rst_n), .load(rdild), .d(d), .q(rdiout));
+  register rsi(.clk(clk), .rst_n(rst_n), .load(rsild), .d(d), .q(rsiout));
+  register rdx(.clk(clk), .rst_n(rst_n), .load(rdxld), .d(d), .q(rdxout));
+  register rcx(.clk(clk), .rst_n(rst_n), .load(rcxld), .d(d), .q(rcxout));
+  register rbp(.clk(clk), .rst_n(rst_n), .load(rbpld), .d(d), .q(rbpout));
+  register rsp(.clk(clk), .rst_n(rst_n), .load(rspld), .d(d), .q(rspout));
+  register rbx(.clk(clk), .rst_n(rst_n), .load(rbxld), .d(d), .q(rbxout));
+  register r8(.clk(clk), .rst_n(rst_n), .load(r8ld), .d(d), .q(r8out));
+  register r9(.clk(clk), .rst_n(rst_n), .load(r9ld), .d(d), .q(r9out));
 
   assign a = rax2a ? raxout : {64{1'bZ}};
   assign a = rdi2a ? rdiout : {64{1'bZ}};
@@ -78,6 +80,24 @@ module registers (clk, rst_n, load, sel, d, a, b);
       `R8  : r82b = 1;
       `R9  : r92b = 1;
     endcase
+  end
+
+  always @(sel[3:0], load) begin
+    raxld = 0; rdild = 0; rsild = 0; rdxld = 0; rcxld = 0;
+    rbpld = 0; rspld = 0; rbxld = 0; r8ld = 0; r9ld = 0;
+    if (load)
+      case (sel[3:0])
+        `RAX : raxld = 1;
+        `RDI : rdild = 1;
+        `RSI : rsild = 1;
+        `RDX : rdxld = 1;
+        `RCX : rcxld = 1;
+        `RBP : rbpld = 1;
+        `RSP : rspld = 1;
+        `RBX : rbxld = 1;
+        `R8  : r8ld = 1;
+        `R9  : r9ld = 1;
+      endcase
   end
 
 
