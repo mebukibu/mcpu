@@ -2,3 +2,4 @@
 `define SUB     5'b00001
 `define MUL     5'b00010
 `define AND     5'b00011
+`define CMP     5'b00100

@@ -12,6 +12,7 @@ module alu (a, b, f, c);
       `SUB : c = b - a;
       `MUL : c = b * a;
       `AND : c = b & a;
+      `CMP : c = b - a;
       default : c = {64{1'bX}};
     endcase
 
