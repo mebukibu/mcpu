@@ -25,14 +25,3 @@
 `define MOVAR   8'b01010100
 `define MOVAR4  8'b01011000
 `define MOVAR1  8'b01011100
-
-`define ADD     8'b10000000
-`define ADDN    8'b10000001
-`define SUB     8'b10000100
-`define SUBN    8'b10000101
-`define MUL     8'b10001000
-`define MULN    8'b10001001
-`define AND     8'b10001100
-`define ANDN    8'b10001101
-`define CMP     8'b10010000
-`define CMPN    8'b10010001

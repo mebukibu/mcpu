@@ -26,14 +26,39 @@ module ram (clk, load, wr, addr, d, q);
       endcase
 
   initial begin
-    mem[0] = 0;
-    mem[1] = 1;
-    mem[2] = 2;
-    mem[3] = 3;
-    mem[4] = 4;
-    mem[5] = 5;
-    mem[6] = 6;
-    mem[7] = 7;
+    mem[0]  = 8'd65;
+    mem[1]  = 8'h06;
+    mem[2]  = 8'hF8;
+    mem[3]  = 8'hFF;
+    mem[4]  = 8'h00;
+    mem[5]  = 8'h00;
+
+    mem[6]  = 8'd133;
+    mem[7]  = 8'h06;
+    mem[8]  = 8'h08;
+    mem[9]  = 8'h00;
+    mem[10] = 8'h00;
+    mem[11] = 8'h00;
+
+    mem[12] = 8'd5;
+    mem[13] = 8'h00;
+    mem[14] = 8'd42;
+    mem[15] = 8'h00;
+    mem[16] = 8'h00;
+    mem[17] = 8'h00;
+
+    mem[18] = 8'd8;
+    mem[19] = 8'h00;
+
+    mem[20] = 8'd129;
+    mem[21] = 8'h06;
+    mem[22] = 8'h08;
+    mem[23] = 8'h00;
+    mem[24] = 8'h00;
+    mem[25] = 8'h00;
+
+    mem[26] = 8'h00;
+    mem[27] = 8'h00;
   end  
   
 endmodule
