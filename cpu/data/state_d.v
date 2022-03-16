@@ -1,4 +1,5 @@
-`define IDLE    2'b00
-`define OPCFT   2'b01
-`define OPLFT   2'b10
-`define EXE     2'b11
+`define IDLE    3'b000
+`define OPCFT   3'b001
+`define OPLFT   3'b010
+`define EXE     3'b011
+`define LOAD    3'b100

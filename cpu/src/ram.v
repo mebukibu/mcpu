@@ -1,9 +1,8 @@
-module ram (clk, load, wr, addr, d, q1, q2);
+module ram (clk, load, addr, d, q1, q2);
 
   input clk, load;
-  input [1:0] wr;
   input [15:0] addr;
-  input [63:0] d;
+  input [7:0] d;
   output [63:0] q1;
   output [47:0] q2;
   reg [7:0] mem[0:2**16-1];
@@ -14,20 +13,10 @@ module ram (clk, load, wr, addr, d, q1, q2);
   assign q2 = {{mem[9][2:0]},  {mem[13][2:0]}, {mem[17][2:0]}, {mem[21][2:0]}, {mem[25][2:0]}, {mem[29][2:0]}, {mem[33][2:0]}, {mem[37][2:0]}, 
                {mem[41][2:0]}, {mem[45][2:0]}, {mem[49][2:0]}, {mem[53][2:0]}, {mem[57][2:0]}, {mem[61][2:0]}, {mem[65][2:0]}, {mem[69][2:0]}};
 
+
   always @(posedge clk)
     if (load)
-      case (wr)
-        2'b01 : begin
-          mem[addr] <= d[7:0];
-        end
-        2'b10 : begin
-          mem[addr+3] <= d[31:24]; mem[addr+2] <= d[23:16]; mem[addr+1] <= d[15:8]; mem[addr] <= d[7:0];
-        end
-        2'b11 : begin
-          mem[addr+7] <= d[63:56]; mem[addr+6] <= d[55:48]; mem[addr+5] <= d[47:40]; mem[addr+4] <= d[39:32];
-          mem[addr+3] <= d[31:24]; mem[addr+2] <= d[23:16]; mem[addr+1] <= d[15:8]; mem[addr] <= d[7:0];
-        end
-      endcase
+      mem[addr] <= d;
 
   initial begin
     mem[0]   = 8'h22; //JMP 73
