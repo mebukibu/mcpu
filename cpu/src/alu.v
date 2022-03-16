@@ -8,12 +8,12 @@ module alu (a, b, f, c);
 
   always @(a, b, f)
     case(f)
-      `ADD : c = b + a;
-      `SUB : c = b - a;
-      `MUL : c = b * a;
-      `AND : c = b & a;
-      `CMP : c = b - a;
-      default : c = {64{1'bX}};
+      `ADD : c <= b + a;
+      `SUB : c <= b - a;
+      `MUL : c <= b * a;
+      `AND : c <= b & a;
+      `CMP : c <= b - a;
+      default : c <= {64{1'bX}};
     endcase
 
 endmodule

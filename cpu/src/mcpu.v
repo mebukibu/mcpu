@@ -10,20 +10,20 @@ module mcpu (clk, rst_n, run, q);
   wire [1:0] flg;
   wire [2:0] cs;
   wire [4:0] f;
-  wire [7:0] opc, sel, rmcout;
-  wire [15:0] abus, pcout, rmcadq;
+  wire [7:0] opc, sel, rmlout;
+  wire [15:0] abus, pcout, rmladq;
   wire [63:0] a, b, opl, selout, aluout, ramout, decout;
   wire [63:0] dbus;
 
-  reg a2abus, b2abus, pc2abus, rmc2abus, a2dbus, b2dbus, pc2dbus, ram2dbus, dec2dbus,
+  reg a2abus, b2abus, pc2abus, rml2abus, a2dbus, b2dbus, pc2dbus, ram2dbus, dec2dbus,
       hlt, loadreg, loadflag, loadram, dbus2pc,  dbus2opc, dbus2opl;
   reg [1:0] pcinc, wr;
 
   flag flag0(.clk(clk), .rst_n(rst_n), .load(loadflag), .d(aluout), .q(flg));
   state state0(.clk(clk), .rst_n(rst_n), .run(run), .hlt(hlt), .kp(kp), .q(cs));
   pc pc0(.clk(clk), .rst_n(rst_n), .load(dbus2pc), .inc(pcinc), .d(dbus[15:0]), .q(pcout));
-  ramctrl ramctrl0(.clk(clk), .wr(wr), .cs(cs), .add(abus), .d(dbus), .kp(kp), .adq(rmcadq), .q(rmcout));
-  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmcout), .q1(ramout), .q2(q));
+  ramloader ramloader0(.clk(clk), .wr(wr), .cs(cs), .add(abus), .d(dbus), .kp(kp), .adq(rmladq), .q(rmlout));
+  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmlout), .q1(ramout), .q2(q));
   selector selector0(.opc(opc), .flg(flg), .c(aluout), .d(dbus), .q(selout));
   registers registers0(.clk(clk), .rst_n(rst_n), .load(loadreg), .sel(sel), .d(selout), .a(a), .b(b));
   alu alu0(.a(dbus), .b(b), .f(f), .c(aluout));
@@ -34,7 +34,7 @@ module mcpu (clk, rst_n, run, q);
   assign abus = a2abus ? a[15:0] : {16{1'bZ}};
   assign abus = b2abus ? b[15:0] : {16{1'bZ}};
   assign abus = pc2abus ? pcout : {16{1'bZ}};
-  assign abus = rmc2abus ? rmcadq : {16{1'bZ}};
+  assign abus = rml2abus ? rmladq : {16{1'bZ}};
 
   assign dbus = a2dbus ? a : {64{1'bZ}};
   assign dbus = b2dbus ? b : {64{1'bZ}};
@@ -43,7 +43,7 @@ module mcpu (clk, rst_n, run, q);
   assign dbus = dec2dbus ? decout : {64{1'bZ}};
 
   always @(cs, opc, flg) begin
-    a2abus=0; b2abus=0; pc2abus=0; rmc2abus=0; a2dbus=0; b2dbus=0; pc2dbus=0; ram2dbus=0; dec2dbus=0;
+    a2abus=0; b2abus=0; pc2abus=0; rml2abus=0; a2dbus=0; b2dbus=0; pc2dbus=0; ram2dbus=0; dec2dbus=0;
     hlt=0; loadreg=0; loadflag=0; loadram=0; dbus2pc=0; dbus2opc=0; dbus2opl=0;
     pcinc=2'b00; wr=2'b00;
 
@@ -98,7 +98,7 @@ module mcpu (clk, rst_n, run, q);
       end    
     end
     else if (cs == `LOAD) begin
-      rmc2abus=1; loadram=1;
+      rml2abus=1; loadram=1;
     end
   end
 

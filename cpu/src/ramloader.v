@@ -1,5 +1,5 @@
 `include "../data/state_d.v"
-module ramctrl (clk, wr, cs, add, d, kp, adq, q);
+module ramloader (clk, wr, cs, add, d, kp, adq, q);
 
   input clk;
   input [1:0] wr;
