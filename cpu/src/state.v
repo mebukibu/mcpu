@@ -9,10 +9,13 @@ module state (clk, rst_n, run, hlt, kp, q);
     if (!rst_n) q <= `IDLE;
     else case (q)
       `IDLE  : if (run) q <= `OPCFT;
-      `OPCFT : q <= `OPLFT;
-      `OPLFT : q <= `EXE;
+      `OPCFT : q <= `OPLRD;
+      `OPLRD : if (!kp) q <= `OPLFT;
+      `OPLFT : q <= `ADRD;
+      `ADRD  : if (!kp) q <= `EXE; else q <= `EXERD;
+      `EXERD : if (!kp) q <= `EXE;
       `EXE   : if (hlt) q <= `IDLE; else if (!kp) q <= `OPCFT; else q <= `LOAD;
-      `LOAD  : if (!kp) q <= `OPCFT; else q <= `LOAD;
+      `LOAD  : if (!kp) q <= `OPCFT;
       default: q <= 3'bXXX;
     endcase
 

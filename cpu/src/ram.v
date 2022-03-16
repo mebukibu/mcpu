@@ -3,12 +3,11 @@ module ram (clk, load, addr, d, q1, q2);
   input clk, load;
   input [15:0] addr;
   input [7:0] d;
-  output [63:0] q1;
+  output [7:0] q1;
   output [47:0] q2;
   reg [7:0] mem[0:2**16-1];
 
-  assign q1 = {{mem[addr+7]}, {mem[addr+6]}, {mem[addr+5]}, {mem[addr+4]},
-               {mem[addr+3]}, {mem[addr+2]}, {mem[addr+1]}, {mem[addr]}};
+  assign q1 = mem[addr];
 
   assign q2 = {{mem[9][2:0]},  {mem[13][2:0]}, {mem[17][2:0]}, {mem[21][2:0]}, {mem[25][2:0]}, {mem[29][2:0]}, {mem[33][2:0]}, {mem[37][2:0]}, 
                {mem[41][2:0]}, {mem[45][2:0]}, {mem[49][2:0]}, {mem[53][2:0]}, {mem[57][2:0]}, {mem[61][2:0]}, {mem[65][2:0]}, {mem[69][2:0]}};
@@ -94,10 +93,10 @@ module ram (clk, load, addr, d, q1, q2);
     mem[71]  = 8'h00;
     mem[72]  = 8'h00;
     
-    mem[73]  = 8'h41; // MOVRN RSP 00001FF8
+    mem[73]  = 8'h41; // MOVRN RSP 0000FFF8
     mem[74]  = 8'h06;
     mem[75]  = 8'hF8;
-    mem[76]  = 8'h1F;
+    mem[76]  = 8'hFF;
     mem[77]  = 8'h00;
     mem[78]  = 8'h00;
 
@@ -151,7 +150,7 @@ module ram (clk, load, addr, d, q1, q2);
     mem[118] = 8'h00;
     mem[119] = 8'h02;
     
-    mem[120] = 8'h58; // MOVAR4 RAX RDI
+    mem[120] = 8'h54; // MOVAR RAX RDI
     mem[121] = 8'h00;
     mem[122] = 8'h01;
 
@@ -159,7 +158,7 @@ module ram (clk, load, addr, d, q1, q2);
     mem[124] = 8'h00;
     mem[125] = 8'h02;
 
-    mem[126] = 8'h58; // MOVAR4 RAX RDI
+    mem[126] = 8'h5C; // MOVAR1 RAX RDI
     mem[127] = 8'h00;
     mem[128] = 8'h01;
 
@@ -167,17 +166,24 @@ module ram (clk, load, addr, d, q1, q2);
     mem[130] = 8'h00;
     mem[131] = 8'h02;
 
-    mem[132] = 8'h58; // MOVAR4 RAX RDI
+    mem[132] = 8'h5C; // MOVAR4 RAX RDI
     mem[133] = 8'h00;
     mem[134] = 8'h01;
 
-    mem[135] = 8'h80; // ADD RAX RSI
-    mem[136] = 8'h00;
-    mem[137] = 8'h02;
+    mem[135] = 8'h44; // MOVRA RDX RAX
+    mem[136] = 8'h03;
+    mem[137] = 8'h00;
 
+    mem[138] = 8'h48; // MOVRA4 RCX RAX
+    mem[139] = 8'h04;
+    mem[140] = 8'h00;
 
-    mem[138] = 8'h00; // HLT DMY
-    mem[139] = 8'h00;
+    mem[141] = 8'h4C; // MOVRA1 RBP RAX
+    mem[142] = 8'h05;
+    mem[143] = 8'h00;
+
+    mem[144] = 8'h00; // HLT DMY
+    mem[145] = 8'h00;
 
 
   end  
