@@ -1,15 +1,17 @@
 `include "../data/inst.v"
 `include "../data/state_d.v"
 `include "../data/alu_d.v"
-module mcpu (clk, rst_n, run);
+module mcpu (clk, rst_n, run, q);
 
   input clk, rst_n, run;
+  output [47:0] q;
 
   wire [1:0] cs, flg;
   wire [4:0] f;
   wire [7:0] opc, sel;
-  wire [63:0] a, b, opl, selout, aluout, pcout, ramout, decout;
-  wire [63:0] abus, dbus;
+  wire [15:0] abus, pcout;
+  wire [63:0] a, b, opl, selout, aluout, ramout, decout;
+  wire [63:0] dbus;
 
   reg a2abus, b2abus, pc2abus, a2dbus, b2dbus, pc2dbus, ram2dbus, dec2dbus,
       hlt, loadreg, loadflag, dbus2pc, dbus2ram, dbus2opc, dbus2opl;
@@ -17,8 +19,8 @@ module mcpu (clk, rst_n, run);
 
   flag flag0(.clk(clk), .rst_n(rst_n), .load(loadflag), .d(aluout), .q(flg));
   state state0(.clk(clk), .rst_n(rst_n), .run(run), .hlt(hlt), .q(cs));
-  pc pc0(.clk(clk), .rst_n(rst_n), .load(dbus2pc), .inc(pcinc), .d(dbus), .q(pcout));
-  ram ram0(.clk(clk), .load(dbus2ram), .wr(wr), .addr(abus[15:0]), .d(dbus), .q(ramout));
+  pc pc0(.clk(clk), .rst_n(rst_n), .load(dbus2pc), .inc(pcinc), .d(dbus[15:0]), .q(pcout));
+  ram ram0(.clk(clk), .load(dbus2ram), .wr(wr), .addr(abus), .d(dbus), .q1(ramout), .q2(q));
   selector selector0(.opc(opc), .flg(flg), .c(aluout), .d(dbus), .q(selout));
   registers registers0(.clk(clk), .rst_n(rst_n), .load(loadreg), .sel(sel), .d(selout), .a(a), .b(b));
   alu alu0(.a(dbus), .b(b), .f(f), .c(aluout));
@@ -26,13 +28,13 @@ module mcpu (clk, rst_n, run);
   register opland(.clk(clk), .rst_n(rst_n), .load(dbus2opl), .d(dbus), .q(opl));
   decoder decoder0(.opc(opc), .opl(opl), .f(f), .sel(sel), .q(decout));
 
-  assign abus = a2abus ? a : {64{1'bZ}};
-  assign abus = b2abus ? b : {64{1'bZ}};
-  assign abus = pc2abus ? pcout : {64{1'bZ}};
+  assign abus = a2abus ? a[15:0] : {16{1'bZ}};
+  assign abus = b2abus ? b[15:0] : {16{1'bZ}};
+  assign abus = pc2abus ? pcout : {16{1'bZ}};
 
   assign dbus = a2dbus ? a : {64{1'bZ}};
   assign dbus = b2dbus ? b : {64{1'bZ}};
-  assign dbus = pc2dbus ? pcout : {64{1'bZ}};
+  assign dbus = pc2dbus ? {{51{1'b0}}, pcout} : {64{1'bZ}};
   assign dbus = ram2dbus ? ramout : {64{1'bZ}};
   assign dbus = dec2dbus ? decout : {64{1'bZ}};
 

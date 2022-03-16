@@ -18,7 +18,7 @@ module selector (opc, flg, c, d, q);
   assign q = df  ? d : {64{1'bZ}};
 
 
-  always @(opc) begin
+  always @(opc, flg) begin
     set = 0; ma4 = 0; ma1 = 0; mr1 = 0;
     df = 0; val = 0;
 
