@@ -9,7 +9,6 @@ module mcpu (clk, rst_n, run, out);
   wire kpl, kpr;
   wire [1:0] flg;
   wire [2:0] cs;
-  wire [3:0] outd;
   wire [4:0] f;
   wire [7:0] opc, sel, rmlout, ramout;
   wire [15:0] abus, pcout, rmladq, rmradq;
@@ -34,7 +33,7 @@ module mcpu (clk, rst_n, run, out);
   register #(8) opcode(.clk(clk), .rst_n(rst_n), .load(dbus2opc), .d(dbus[7:0]), .q(opc));
   register opland(.clk(clk), .rst_n(rst_n), .load(dbus2opl), .d(dbus), .q(opl));
   decoder decoder0(.opc(opc), .opl(opl), .f(f), .sel(sel), .q(decout));
-  outreg outreg0(.rst_n(rst_n), .addr(abus), .d(outd), .q(q));
+  outreg outreg0(.clk(clk), .rst_n(rst_n), .load(loadram), .addr(abus), .d(rmlout[3:0]), .q(q));
 
   assign out = {q[12], q[8], q[4], q[0]};
 
@@ -50,8 +49,6 @@ module mcpu (clk, rst_n, run, out);
   assign dbus = ram2dbus ? {{56{1'bX}}, ramout} : {64{1'bZ}};
   assign dbus = dec2dbus ? decout : {64{1'bZ}};
   assign dbus = rmr2dbus ? rmrout : {64{1'bZ}};
-
-  assign outd = (cs == `EXE | cs == `LOAD) ? rmlout[3:0] : ramout[3:0];
 
   always @(kpl, kpr, cs) begin
     if (cs == `EXE | cs == `LOAD)

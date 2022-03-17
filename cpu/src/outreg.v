@@ -1,14 +1,14 @@
-module outreg (rst_n, addr, d, q);
+module outreg (clk, rst_n, load, addr, d, q);
 
-  input rst_n;
+  input clk, rst_n, load;
   input [3:0] d;
   input [15:0] addr;
   output [63:0] q;
   reg [63:0] q;
 
-  always @(addr, d, negedge rst_n)
+  always @(posedge clk, negedge rst_n)
     if (!rst_n) q <= 0;
-    else
+    else if (load)
       case (addr)
         16'd69 : q[63:60] <= d;
         16'd65 : q[59:56] <= d;
