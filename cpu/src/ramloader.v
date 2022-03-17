@@ -17,25 +17,29 @@ module ramloader (clk, wr, cs, add, d, kp, adq, q);
   reg [2:0] cnt;
   reg [63:0] data;
 
-  always @(cs, wr, add, d) begin
+  always @(cs, wr, add, d, cnt, tim) begin
     if (cs == `EXE) begin
-      adq <= add;
       data <= d;
       case (wr)
-        2'b00 : begin cnt <= 0; tim <= 0; kp <= 0; end
-        2'b01 : begin cnt <= 0; tim <= 0; kp <= 0; end
-        2'b10 : begin cnt <= 0; tim <= 2; kp <= 1; end
-        2'b11 : begin cnt <= 0; tim <= 6; kp <= 1; end
+        2'b00 : begin tim <= 0; kp <= 0; end
+        2'b01 : begin tim <= 0; kp <= 0; end
+        2'b10 : begin tim <= 3; kp <= 1; end
+        2'b11 : begin tim <= 7; kp <= 1; end
       endcase
     end
+    else if (cs == `LOAD)
+      if (cnt == tim)
+        kp <= 0;
   end
 
   always @(posedge clk) begin
-    if (cs == `LOAD) begin
+    if (cs == `EXE) begin
+      cnt <= 0;
+      adq <= add;
+    end
+    else if (cs == `LOAD) begin
       cnt <= cnt + 1;
-      adq <= adq + 1;
-      if (cnt == tim)
-        kp <= 0;
+      adq <= adq + 1;      
     end
   end
 

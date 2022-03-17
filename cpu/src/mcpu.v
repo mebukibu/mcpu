@@ -4,7 +4,7 @@
 module mcpu (clk, rst_n, run, q);
 
   input clk, rst_n, run;
-  output [47:0] q;
+  output [63:0] q;
 
   wire kpl, kpr;
   wire [1:0] flg;
@@ -25,7 +25,7 @@ module mcpu (clk, rst_n, run, q);
   state state0(.clk(clk), .rst_n(rst_n), .run(run), .hlt(hlt), .kp(kp), .q(cs));
   pc pc0(.clk(clk), .rst_n(rst_n), .load(dbus2pc), .inc(pcinc), .d(dbus[15:0]), .q(pcout));
   ramloader ramloader0(.clk(clk), .wr(wr), .cs(cs), .add(abus), .d(dbus), .kp(kpl), .adq(rmladq), .q(rmlout));
-  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmlout), .q1(ramout), .q2(q));
+  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmlout), .q1(ramout));
   ramreader ramreader0(.clk(clk), .cs(cs), .opc(opc), .add(abus), .d(ramout), .kp(kpr), .adq(rmradq), .q(rmrout));
   selector selector0(.opc(opc), .flg(flg), .c(aluout), .d(dbus), .q(selout));
   registers registers0(.clk(clk), .rst_n(rst_n), .load(loadreg), .sel(sel), .d(selout), .a(a), .b(b));
@@ -46,6 +46,8 @@ module mcpu (clk, rst_n, run, q);
   assign dbus = ram2dbus ? {{56{1'bX}}, ramout} : {64{1'bZ}};
   assign dbus = dec2dbus ? decout : {64{1'bZ}};
   assign dbus = rmr2dbus ? rmrout : {64{1'bZ}};
+
+  assign q = dbus;
 
   always @(kpl, kpr, cs) begin
     if (cs == `EXE | cs == `LOAD)
@@ -69,7 +71,7 @@ module mcpu (clk, rst_n, run, q);
       rmr2abus=1;
     end
     else if (cs == `OPLFT) begin
-      pc2abus=1; rmr2dbus=1; dbus2opl=1;
+      rmr2abus=1; rmr2dbus=1; dbus2opl=1;
       if (opc[0] == 1)
         pcinc = 2'b10;
       else if (opc[1] == 1)

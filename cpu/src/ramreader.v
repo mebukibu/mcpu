@@ -15,31 +15,37 @@ module ramreader (clk, cs, opc, add, d, kp, adq, q);
   reg [2:0] tim;
   reg [2:0] cnt;
 
-  always @(cs, opc, add, d) begin
+  always @(cs, opc, add, d, cnt, tim) begin
     if (cs == `OPCFT) begin
-      adq <= add + 1;
-      cnt <= 0;
       tim <= 6;
       kp <= 1;
     end
     else if (cs == `ADRD) begin
-      adq <= add;
       case (opc)
-        `POP    : begin cnt <= 0; tim <= 6; kp <= 1; end
-        `MOVRA  : begin cnt <= 0; tim <= 6; kp <= 1; end
-        `MOVRA4 : begin cnt <= 0; tim <= 2; kp <= 1; end
-        `MOVRA1 : begin cnt <= 0; tim <= 0; kp <= 0; end
-        default : begin cnt <= 0; tim <= 0; kp <= 0; end
+        `POP    : begin tim <= 7; kp <= 1; end
+        `MOVRA  : begin tim <= 7; kp <= 1; end
+        `MOVRA4 : begin tim <= 3; kp <= 1; end
+        `MOVRA1 : begin tim <= 0; kp <= 0; end
+        default : begin tim <= 0; kp <= 0; end
       endcase
     end
+    else if (cs == `OPLRD | cs == `EXERD)
+      if (cnt == tim)
+        kp <= 0;    
   end
 
   always @(posedge clk) begin
-    if (cs == `OPLRD | cs == `EXERD) begin
+    if (cs == `OPCFT) begin
+      adq <= add + 1;
+      cnt <= 0;
+    end
+     if (cs == `ADRD) begin
+      adq <= add;
+      cnt <= 0;
+     end
+     else if (cs == `OPLRD | cs == `EXERD) begin
       cnt <= cnt + 1;
       adq <= adq + 1;
-      if (cnt == tim)
-        kp <= 0;
     end
   end
 
