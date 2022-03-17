@@ -1,10 +1,10 @@
 `include "../data/state_d.v"
-module ramreader (clk, cs, opc, add, d, kp, adq, q);
+module ramreader (clk, cs, opc, addr, d, kp, adq, q);
 
   input clk;
   input [2:0] cs;
   input [7:0] opc, d;
-  input [15:0] add;
+  input [15:0] addr;
   output kp;
   output [15:0] adq;
   output [63:0] q;
@@ -15,7 +15,7 @@ module ramreader (clk, cs, opc, add, d, kp, adq, q);
   reg [2:0] tim;
   reg [2:0] cnt;
 
-  always @(cs, opc, add, d, cnt, tim) begin
+  always @(cs, opc, addr, d, cnt, tim) begin
     if (cs == `OPCFT) begin
       tim <= 6;
       kp <= 1;
@@ -36,11 +36,11 @@ module ramreader (clk, cs, opc, add, d, kp, adq, q);
 
   always @(posedge clk) begin
     if (cs == `OPCFT) begin
-      adq <= add + 1;
+      adq <= addr + 1;
       cnt <= 0;
     end
      if (cs == `ADRD) begin
-      adq <= add;
+      adq <= addr;
       cnt <= 0;
      end
      else if (cs == `OPLRD | cs == `EXERD) begin
@@ -51,14 +51,14 @@ module ramreader (clk, cs, opc, add, d, kp, adq, q);
 
   always @(cnt, d)
     case (cnt)
-      0 : q[7:0]   <= d;
-      1 : q[15:8]  <= d;
-      2 : q[23:16] <= d;
-      3 : q[31:24] <= d;
-      4 : q[39:32] <= d;
-      5 : q[47:40] <= d;
-      6 : q[55:48] <= d;
-      7 : q[63:56] <= d;
+      3'd0 : q[7:0]   <= d;
+      3'd1 : q[15:8]  <= d;
+      3'd2 : q[23:16] <= d;
+      3'd3 : q[31:24] <= d;
+      3'd4 : q[39:32] <= d;
+      3'd5 : q[47:40] <= d;
+      3'd6 : q[55:48] <= d;
+      3'd7 : q[63:56] <= d;
       default : q <= {64{1'bX}};
     endcase
 

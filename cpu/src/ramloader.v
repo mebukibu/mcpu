@@ -1,10 +1,10 @@
 `include "../data/state_d.v"
-module ramloader (clk, wr, cs, add, d, kp, adq, q);
+module ramloader (clk, wr, cs, addr, d, kp, adq, q);
 
   input clk;
   input [1:0] wr;
   input [2:0] cs;
-  input [15:0] add;
+  input [15:0] addr;
   input [63:0] d;
   output kp;
   output [15:0] adq;
@@ -17,7 +17,7 @@ module ramloader (clk, wr, cs, add, d, kp, adq, q);
   reg [2:0] cnt;
   reg [63:0] data;
 
-  always @(cs, wr, add, d, cnt, tim) begin
+  always @(cs, wr, addr, d, cnt, tim) begin
     if (cs == `EXE) begin
       data <= d;
       case (wr)
@@ -35,7 +35,7 @@ module ramloader (clk, wr, cs, add, d, kp, adq, q);
   always @(posedge clk) begin
     if (cs == `EXE) begin
       cnt <= 0;
-      adq <= add;
+      adq <= addr;
     end
     else if (cs == `LOAD) begin
       cnt <= cnt + 1;
@@ -45,14 +45,14 @@ module ramloader (clk, wr, cs, add, d, kp, adq, q);
 
   always @(cnt, data)
     case (cnt)
-      0 : q <= data[7:0];
-      1 : q <= data[15:8];
-      2 : q <= data[23:16];
-      3 : q <= data[31:24];
-      4 : q <= data[39:32];
-      5 : q <= data[47:40];
-      6 : q <= data[55:48];
-      7 : q <= data[63:56];
+      3'd0 : q <= data[7:0];
+      3'd1 : q <= data[15:8];
+      3'd2 : q <= data[23:16];
+      3'd3 : q <= data[31:24];
+      3'd4 : q <= data[39:32];
+      3'd5 : q <= data[47:40];
+      3'd6 : q <= data[55:48];
+      3'd7 : q <= data[63:56];
       default : q <= 8'hXX;
     endcase
 

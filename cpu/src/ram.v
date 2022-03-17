@@ -1,12 +1,12 @@
-module ram (clk, load, addr, d, q1);
+module ram (clk, load, addr, d, q);
 
   input clk, load;
   input [15:0] addr;
   input [7:0] d;
-  output [7:0] q1;
+  output [7:0] q;
   reg [7:0] mem[0:2**16-1];
 
-  assign q1 = mem[addr];
+  assign q = mem[addr];
 
   always @(posedge clk)
     if (load)

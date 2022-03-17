@@ -1,19 +1,20 @@
 `include "../data/inst.v"
 `include "../data/state_d.v"
 `include "../data/alu_d.v"
-module mcpu (clk, rst_n, run, q);
+module mcpu (clk, rst_n, run, out);
 
   input clk, rst_n, run;
-  output [63:0] q;
+  output [3:0] out;
 
   wire kpl, kpr;
   wire [1:0] flg;
   wire [2:0] cs;
+  wire [3:0] outd;
   wire [4:0] f;
   wire [7:0] opc, sel, rmlout, ramout;
   wire [15:0] abus, pcout, rmladq, rmradq;
   wire [63:0] a, b, opl, selout, aluout, decout, rmrout;
-  wire [63:0] dbus;
+  wire [63:0] dbus, q;
 
   reg kp;
   reg a2abus, b2abus, pc2abus, rml2abus, rmr2abus,
@@ -24,15 +25,18 @@ module mcpu (clk, rst_n, run, q);
   flag flag0(.clk(clk), .rst_n(rst_n), .load(loadflag), .d(aluout), .q(flg));
   state state0(.clk(clk), .rst_n(rst_n), .run(run), .hlt(hlt), .kp(kp), .q(cs));
   pc pc0(.clk(clk), .rst_n(rst_n), .load(dbus2pc), .inc(pcinc), .d(dbus[15:0]), .q(pcout));
-  ramloader ramloader0(.clk(clk), .wr(wr), .cs(cs), .add(abus), .d(dbus), .kp(kpl), .adq(rmladq), .q(rmlout));
-  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmlout), .q1(ramout));
-  ramreader ramreader0(.clk(clk), .cs(cs), .opc(opc), .add(abus), .d(ramout), .kp(kpr), .adq(rmradq), .q(rmrout));
+  ramloader ramloader0(.clk(clk), .wr(wr), .cs(cs), .addr(abus), .d(dbus), .kp(kpl), .adq(rmladq), .q(rmlout));
+  ram ram0(.clk(clk), .load(loadram), .addr(abus), .d(rmlout), .q(ramout));
+  ramreader ramreader0(.clk(clk), .cs(cs), .opc(opc), .addr(abus), .d(ramout), .kp(kpr), .adq(rmradq), .q(rmrout));
   selector selector0(.opc(opc), .flg(flg), .c(aluout), .d(dbus), .q(selout));
   registers registers0(.clk(clk), .rst_n(rst_n), .load(loadreg), .sel(sel), .d(selout), .a(a), .b(b));
   alu alu0(.a(dbus), .b(b), .f(f), .c(aluout));
   register #(8) opcode(.clk(clk), .rst_n(rst_n), .load(dbus2opc), .d(dbus[7:0]), .q(opc));
   register opland(.clk(clk), .rst_n(rst_n), .load(dbus2opl), .d(dbus), .q(opl));
   decoder decoder0(.opc(opc), .opl(opl), .f(f), .sel(sel), .q(decout));
+  outreg outreg0(.rst_n(rst_n), .addr(abus), .d(outd), .q(q));
+
+  assign out = {q[12], q[8], q[4], q[0]};
 
   assign abus = a2abus ? a[15:0] : {16{1'bZ}};
   assign abus = b2abus ? b[15:0] : {16{1'bZ}};
@@ -47,7 +51,7 @@ module mcpu (clk, rst_n, run, q);
   assign dbus = dec2dbus ? decout : {64{1'bZ}};
   assign dbus = rmr2dbus ? rmrout : {64{1'bZ}};
 
-  assign q = dbus;
+  assign outd = (cs == `EXE | cs == `LOAD) ? rmlout[3:0] : ramout[3:0];
 
   always @(kpl, kpr, cs) begin
     if (cs == `EXE | cs == `LOAD)
