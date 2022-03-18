@@ -116,7 +116,7 @@ module mcpu (clk, rst_n, run, out);
           `MOVRN  : begin dec2dbus=1; loadreg=1; pcinc=2'b01; end
           `MOVRA  : begin a2abus=1; rmr2dbus=1; loadreg=1; pcinc=2'b01; end
           `MOVRA4 : begin a2abus=1; rmr2dbus=1; loadreg=1; pcinc=2'b01; end
-          `MOVRA1 : begin a2abus=1; rmr2dbus=1; loadreg=1; pcinc=2'b01; end
+          `MOVRA1 : begin a2abus=1; ram2dbus=1; loadreg=1; pcinc=2'b01; end
           `MOVRR1 : begin a2dbus=1; loadreg=1; pcinc=2'b01; end
           `MOVAR  : begin b2abus=1; a2dbus=1; wr=2'b11; pcinc=2'b01; end
           `MOVAR4 : begin b2abus=1; a2dbus=1; wr=2'b10; pcinc=2'b01; end
