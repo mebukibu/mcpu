@@ -2,7 +2,7 @@
 module ramreader (clk, cs, opc, addr, d, kp, adq, q);
 
   input clk;
-  input [2:0] cs;
+  input [3:0] cs;
   input [7:0] opc, d;
   input [15:0] addr;
   output kp;

@@ -165,6 +165,7 @@ module ram (clk, load, addr, d, q);
     mem[133] = 8'h00;
     mem[134] = 8'h01;
 
+
     mem[135] = 8'h44; // MOVRA RDX RAX
     mem[136] = 8'h03;
     mem[137] = 8'h00;
@@ -176,6 +177,7 @@ module ram (clk, load, addr, d, q);
     mem[141] = 8'h4C; // MOVRA1 RBP RAX
     mem[142] = 8'h05;
     mem[143] = 8'h00;
+    
 
     mem[144] = 8'h00; // HLT DMY
     mem[145] = 8'h00;

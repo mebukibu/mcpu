@@ -8,7 +8,7 @@ module mcpu (clk, rst_n, run, out);
 
   wire kpl, kpr;
   wire [1:0] flg;
-  wire [2:0] cs;
+  wire [3:0] cs;
   wire [4:0] f;
   wire [7:0] opc, sel, rmlout, ramout;
   wire [15:0] abus, pcout, rmladq, rmradq;
@@ -51,7 +51,7 @@ module mcpu (clk, rst_n, run, out);
   assign dbus = rmr2dbus ? rmrout : {64{1'bZ}};
 
   always @(kpl, kpr, cs) begin
-    if (cs == `EXE | cs == `LOAD)
+    if (cs == `EXE | cs == `LDRD | cs == `LOAD)
       kp <= kpl;
     else if (cs != `IDLE)
       kp <= kpr;
