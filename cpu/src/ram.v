@@ -13,7 +13,7 @@ module ram (clk, load, addr, d, q);
       mem[addr] <= d;
 
   initial begin
-    mem[0]   = 8'h22; //JMP 73
+    mem[0]   = 8'h22; //JMP d73
     mem[1]   = 8'h49;
     mem[2]   = 8'h00;
     mem[3]   = 8'h00;
@@ -177,11 +177,202 @@ module ram (clk, load, addr, d, q);
     mem[141] = 8'h4C; // MOVRA1 RBP RAX
     mem[142] = 8'h05;
     mem[143] = 8'h00;
+
+
+    mem[144] = 8'h85; // SUBN RSP 8
+    mem[145] = 8'h06;
+    mem[146] = 8'h08;
+    mem[147] = 8'h00;
+    mem[148] = 8'h00;
+    mem[149] = 8'h00;
+
+    mem[150] = 8'h04; // PUSH RAX
+    mem[151] = 8'h00;
+
+    mem[152] = 8'h08; // POP RBX
+    mem[153] = 8'h07;
+
+    mem[154] = 8'h81; // ADDN RSP 8
+    mem[155] = 8'h06;
+    mem[156] = 8'h08;
+    mem[157] = 8'h00;
+    mem[158] = 8'h00;
+    mem[159] = 8'h00;
+
+
+    mem[160] = 8'h85; // SUBN RSP 8
+    mem[161] = 8'h06;
+    mem[162] = 8'h08;
+    mem[163] = 8'h00;
+    mem[164] = 8'h00;
+    mem[165] = 8'h00;
+
+    mem[166] = 8'h05; // PUSHN d34
+    mem[167] = 8'h00;
+    mem[168] = 8'h22;
+    mem[169] = 8'h00;
+    mem[170] = 8'h00;
+    mem[171] = 8'h00;
+
+    mem[172] = 8'h08; // POP R8
+    mem[173] = 8'h08;
+
+    mem[174] = 8'h81; // ADDN RSP 8
+    mem[175] = 8'h06;
+    mem[176] = 8'h08;
+    mem[177] = 8'h00;
+    mem[178] = 8'h00;
+    mem[179] = 8'h00;
+
+
+    mem[180] = 8'h0C; // MOVPC R9
+    mem[181] = 8'h09;
+
+
+    mem[182] = 8'h90; // CMP RDX RBX
+    mem[183] = 8'h03;
+    mem[184] = 8'h07;
+
+    mem[185] = 8'h1C; // SETLE AL
+    mem[186] = 8'h00;
+
+    mem[187] = 8'h91; // CMPN RDX 0
+    mem[188] = 8'h03;
+    mem[189] = 8'h00;
+    mem[190] = 8'h00;
+    mem[191] = 8'h00;
+    mem[192] = 8'h00;
+
+    mem[193] = 8'h10; // SETE R8
+    mem[194] = 8'h08;
+
+
+    mem[195] = 8'h41; // MOVRN RDX FFFFFFFF
+    mem[196] = 8'h03;
+    mem[197] = 8'hFF;
+    mem[198] = 8'hFF;
+    mem[199] = 8'hFF;
+    mem[200] = 8'hFF;
+
+    mem[201] = 8'h40; // MOV RBX RDX
+    mem[202] = 8'h07;
+    mem[203] = 8'h03;
+
+    mem[204] = 8'h50; // MOVRR1 RBX RBX
+    mem[205] = 8'h07;
+    mem[206] = 8'h07;
+
     
+    mem[207] = 8'h84; // SUB RBP RCX
+    mem[208] = 8'h05;
+    mem[209] = 8'h04;
 
-    mem[144] = 8'h00; // HLT DMY
-    mem[145] = 8'h00;
+    mem[210] = 8'h88; // MUL RBX RSI
+    mem[211] = 8'h07;
+    mem[212] = 8'h02;
 
+    mem[213] = 8'h2A; // JNZ d224
+    mem[214] = 8'hE0;
+    mem[215] = 8'h00;
+    mem[216] = 8'h00;
+    mem[217] = 8'h00;
+    mem[218] = 8'h00;
+    mem[219] = 8'h00;
+    mem[220] = 8'h00;
+    mem[221] = 8'h00;
+
+    mem[222] = 8'h00; // HLT DMY
+    mem[223] = 8'h00;
+
+    mem[224] = 8'h89; // MULN RBX 0
+    mem[225] = 8'h07;
+    mem[226] = 8'h00;
+    mem[227] = 8'h00;
+    mem[228] = 8'h00;
+    mem[229] = 8'h00;
+
+    mem[230] = 8'h26; // JE d241
+    mem[231] = 8'hF1;
+    mem[232] = 8'h00;
+    mem[233] = 8'h00;
+    mem[234] = 8'h00;
+    mem[235] = 8'h00;
+    mem[236] = 8'h00;
+    mem[237] = 8'h00;
+    mem[238] = 8'h00;
+
+    mem[239] = 8'h00; // HLT DMY
+    mem[240] = 8'h00;
+
+    mem[241] = 8'h8D; // ANDN RDX 0000FFFF
+    mem[242] = 8'h03;
+    mem[243] = 8'hFF;
+    mem[244] = 8'hFF;
+    mem[245] = 8'h00;
+    mem[246] = 8'h00;
+
+    mem[247] = 8'h8C; // AND RDX RDI
+    mem[248] = 8'h03;
+    mem[249] = 8'h01;
+
+    // function demo
+    mem[250] = 8'h22; // JMP d269
+    mem[251] = 8'h0D;
+    mem[252] = 8'h01;
+    mem[253] = 8'h00;
+    mem[254] = 8'h00;
+    mem[255] = 8'h00;
+    mem[256] = 8'h00;
+    mem[257] = 8'h00;
+    mem[258] = 8'h00;
+
+                      //ret
+    mem[259] = 8'h08; // POP RBX
+    mem[260] = 8'h07;
+
+    mem[261] = 8'h81; // ADDN RSP 8
+    mem[262] = 8'h06;
+    mem[263] = 8'h08;
+    mem[264] = 8'h00;
+    mem[265] = 8'h00;
+    mem[266] = 8'h00;    
+
+    mem[267] = 8'h20; // JMPR RBX
+    mem[268] = 8'h07;
+
+                      //call
+    mem[269] = 8'h0C; // MOVPC RBX 
+    mem[270] = 8'h07;
+
+    mem[271] = 8'h81; // ADDN RBX d23
+    mem[272] = 8'h07;
+    mem[273] = 8'h17;
+    mem[274] = 8'h00;
+    mem[275] = 8'h00;
+    mem[276] = 8'h00; 
+
+    mem[277] = 8'h85; // SUBN RSP 8
+    mem[278] = 8'h06;
+    mem[279] = 8'h08;
+    mem[280] = 8'h00;
+    mem[281] = 8'h00;
+    mem[282] = 8'h00;
+
+    mem[283] = 8'h04; // PUSH RBX
+    mem[284] = 8'h07;
+
+    mem[285] = 8'h22; // JMP d259
+    mem[286] = 8'h03;
+    mem[287] = 8'h01;
+    mem[288] = 8'h00;
+    mem[289] = 8'h00;
+    mem[290] = 8'h00;
+    mem[291] = 8'h00;
+    mem[292] = 8'h00;
+    mem[293] = 8'h00;
+
+    mem[294] = 8'h00; // HLT DMY
+    mem[295] = 8'h00;
 
   end  
   
