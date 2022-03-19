@@ -5,3 +5,5 @@ tmp
 tmp.s
 *.o
 tb
+TMP.s
+test.s
