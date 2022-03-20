@@ -197,7 +197,7 @@ def trans(line):
   return
 
 def translate(data):
-  print("\tJMP .main")
+  print("\tJMP main")
   for line in data:
     trans(line)
   return
