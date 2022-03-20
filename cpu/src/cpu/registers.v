@@ -1,4 +1,4 @@
-`include "../data/register_d.v"
+`include "../../data/register_d.v"
 module registers (clk, rst_n, load, sel, d, a, b);
 
   input clk, rst_n, load;

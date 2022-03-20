@@ -1,5 +1,5 @@
-`include "../data/inst.v"
-`include "../data/register_d.v"
+`include "../../data/inst.v"
+`include "../../data/register_d.v"
 module decoder (opc, opl, f, sel, q);
 
   input [7:0] opc;

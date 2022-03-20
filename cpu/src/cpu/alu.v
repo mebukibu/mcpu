@@ -1,4 +1,4 @@
-`include "../data/alu_d.v"
+`include "../../data/alu_d.v"
 module alu (a, b, f, c);
 
   input signed [63:0] a, b;

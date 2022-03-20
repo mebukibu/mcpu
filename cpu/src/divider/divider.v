@@ -11,7 +11,7 @@ module divider (clk, rst_n, q);
       cnt <= 20'd0;
       q <= 1'b0;
     end 
-    else if (cnt == 100000) begin
+    else if (cnt == 0) begin
       q <= ~q;
       cnt <= 20'b0;
     end

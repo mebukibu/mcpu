@@ -1,4 +1,4 @@
-`include "../data/state_d.v"
+`include "../../data/state_d.v"
 module ramreader (clk, cs, opc, addr, d, kp, adq, q);
 
   input clk;

@@ -1,4 +1,4 @@
-`include "../data/inst.v"
+`include "../../data/inst.v"
 module selector (opc, flg, c, d, q);
 
   input [7:0] opc;

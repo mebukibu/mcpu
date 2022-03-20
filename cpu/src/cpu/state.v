@@ -1,4 +1,4 @@
-`include "../data/state_d.v"
+`include "../../data/state_d.v"
 module state (clk, rst_n, run, hlt, kp, q);
 
   input clk, rst_n, run, hlt, kp;

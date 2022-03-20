@@ -69,10 +69,13 @@ int eightqueen(int N) {
   if (N == 8)
     return 1;
 
-  int x;
-  int y;
-  for (y = 0; y < 8; y = y + 1) {
-    for (x = 0; x < 8; x = x + 1) {
+  int x = 0;
+  int y = 0;
+  if (N != 0) {
+    y = pos[N-1][1];
+  }
+  for ( ; y < 8; y = y + 1) {
+    for (x = 0 ; x < 8; x = x + 1) {
       if (check(x, y, N)) {
         pos[N][0] = x;
         pos[N][1] = y;
@@ -91,7 +94,7 @@ int main() {
   // 8クイーンソルバーの本体
   eightqueen(0);
 
-/*// デバッグのため，画面に出力
+// デバッグのため，画面に出力
   int i;
   int j;
   int board[8][8];
@@ -110,6 +113,6 @@ int main() {
     }
     printf("\n");
   }
-  */
+  
   return 0;
 }

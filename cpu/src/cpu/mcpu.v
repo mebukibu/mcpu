@@ -1,6 +1,6 @@
-`include "../data/inst.v"
-`include "../data/state_d.v"
-`include "../data/alu_d.v"
+`include "../../data/inst.v"
+`include "../../data/state_d.v"
+`include "../../data/alu_d.v"
 module mcpu (clk, rst_n, run, out);
 
   input clk, rst_n, run;
