@@ -4,7 +4,7 @@
 module mcpu (clk, rst_n, run, out);
 
   input clk, rst_n, run;
-  output [3:0] out;
+  output [63:0] out;
 
   wire kpl, kpr;
   wire [1:0] flg;
@@ -13,7 +13,7 @@ module mcpu (clk, rst_n, run, out);
   wire [7:0] opc, sel, rmlout, ramout;
   wire [15:0] abus, pcout, rmladq, rmradq;
   wire [63:0] a, b, opl, selout, aluout, decout, rmrout;
-  wire [63:0] dbus, q;
+  wire [63:0] dbus;
 
   reg kp;
   reg a2abus, b2abus, pc2abus, rml2abus, rmr2abus,
@@ -33,9 +33,7 @@ module mcpu (clk, rst_n, run, out);
   register #(8) opcode(.clk(clk), .rst_n(rst_n), .load(dbus2opc), .d(dbus[7:0]), .q(opc));
   register opland(.clk(clk), .rst_n(rst_n), .load(dbus2opl), .d(dbus), .q(opl));
   decoder decoder0(.opc(opc), .opl(opl), .f(f), .sel(sel), .q(decout));
-  outreg outreg0(.clk(clk), .rst_n(rst_n), .load(loadram), .addr(abus), .d(rmlout[3:0]), .q(q));
-
-  assign out = {q[12], q[8], q[4], q[0]};
+  outreg outreg0(.clk(clk), .rst_n(rst_n), .load(loadram), .addr(abus), .d(rmlout[3:0]), .q(out));
 
   assign abus = a2abus ? a[15:0] : {16{1'bZ}};
   assign abus = b2abus ? b[15:0] : {16{1'bZ}};
