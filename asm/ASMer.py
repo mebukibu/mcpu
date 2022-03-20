@@ -82,12 +82,20 @@ def gen(data, label):
   for line in data:
     if ':' in line[0]:
       print("                       // " + line[0])
-    elif line[0] == ".zero" or line[0] == ".byte":
+    elif line[0] == ".zero":
       if line[1].isdigit():
         for i in range(int(line[1])):
           address = format(addr, '04X')
           print("mem[16'h" + address + "] = 8'h00;")
           addr += 1
+      else:
+        a2A.error(line[0])
+    elif line[0] == ".byte":
+      if line[1].isdigit():
+        address = format(addr, '04X')
+        num = format(int(line[1]), '02X')
+        print("mem[16'h" + address + "] = 8'h" + num + "00;")
+        addr += 1
       else:
         a2A.error(line[0])
     elif line[0] in instbytes:
@@ -112,11 +120,13 @@ def getlabeladdr(data):
   for line in data:
     if ':' in line[0]:
       label.update({line[0].strip(':') : addr})
-    elif line[0] == ".zero" or line[0] == ".bytes":
+    elif line[0] == ".zero":
       if line[1].isdigit():
         addr += int(line[1])
       else:
         a2A.error(line[0])
+    elif line[0] == ".byte":
+      addr += 1
     elif line[0] in instbytes:
       addr += instbytes[line[0]]
     else:
