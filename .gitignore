@@ -2,8 +2,7 @@ a.out
 *.lnk
 mcc/mcc
 tmp
-tmp.s
+*.s
 *.o
 tb
-TMP.s
-test.s
+__pycache__

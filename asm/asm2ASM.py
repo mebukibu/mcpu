@@ -68,7 +68,7 @@ def trans(line):
         reg = line[2].strip('[').strip(']')
         print("\tMOVRA", regs1[line[1]], regs1[reg])
       elif line[2].isdigit():
-        print("\tMOVN", regs1[line[1]], line[2])
+        print("\tMOVRN", regs1[line[1]], line[2])
       else:
         error(line[0])
     elif '[' in line[1] and ']' in line[1]:
@@ -182,7 +182,7 @@ def trans(line):
   elif line[0] == "ret":
     print("\tPOP RBX")
     print("\tADDN RSP 8")
-    print("\tJMPPR RBX")
+    print("\tJMPR RBX")
   elif line[0] == ".intel_syntax" \
       or line[0] == ".data" \
       or line[0] == ".text" \
@@ -200,11 +200,13 @@ def translate(data):
   print("\tJMP .main")
   for line in data:
     trans(line)
+  return
 
 def main():
   name = '../mcc/tmp.s'
   data = fileload(name)
   translate(data)
+  return
 
 if __name__ == '__main__':
   main()
