@@ -46,6 +46,8 @@ def printnum(line, addr):
   elif line[0] == "PUSHN":
     print("mem[16'h" + address + "] = 8'h00;")
     num = format(int(line[1]), '08X')
+  else:
+    a2A.error(line[0])
   addr += 1  
   for i in range(4):
     address = format(addr, '04X')
@@ -71,7 +73,6 @@ def printbytes2(line, addr):
     print("mem[16'h" + address + "] = 8'h00;")
     return addr + 1
   elif line[1] in regs:
-    
     print("mem[16'h" + address + "] = 8'h" + regs[line[1]] + ';')
     return addr + 1
   else:
@@ -111,8 +112,6 @@ def gen(data, label):
         a2A.error(line[0])
     else:
       a2A.error(line[0])
-  
-  return
 
 def getlabeladdr(data):
   label = {}
@@ -143,6 +142,7 @@ def main():
   name = 'TMP.s'
   data = a2A.fileload(name)
   codegen(data)
+  return
 
 if __name__ == '__main__':
   main()

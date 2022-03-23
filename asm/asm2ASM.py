@@ -194,8 +194,6 @@ def trans(line):
   else:
     error(line[0])
 
-  return
-
 def translate(data):
   print("\tJMP main")
   for line in data:
